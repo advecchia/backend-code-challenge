@@ -1,3 +1,6 @@
+# Ubuntu temporary files
+*.*~
+
 # Eclipse
 *.project
 *.pydevproject
