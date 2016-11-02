@@ -1,5 +1,6 @@
 # Ubuntu temporary files
 *.*~
+*~
 
 # Python compilations and optimizations
 *.pyc
