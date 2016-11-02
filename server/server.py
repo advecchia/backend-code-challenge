@@ -350,4 +350,6 @@ def handle_invalid_input(error):
     return response
 
 if __name__ == '__main__':
-    app.run(threaded=True, debug=True)
+    host = '127.0.0.1'
+    port = int(os.environ.get('PORT', 5000))
+    app.run(threaded=True, debug=True, host=host, port=port)
