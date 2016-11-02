@@ -3,7 +3,8 @@ from uuid import UUID
 from markdown import markdown
 from flask import g, request, Response, jsonify
 from flask_api import FlaskAPI, status
-sys.path.append(os.getcwd()) # Allow script run on shell (local files for PYTHONPATH)
+# Allow script run on shell (local files for PYTHONPATH)
+sys.path.append(os.path.join(os.getcwd(),os.path.dirname(__file__), '../'))
 from client.emission import Emission
 from client.errorhandlers import InvalidUsage
 from complexresponse import ComplexResponse
@@ -241,39 +242,43 @@ def get_valid_emission_heading(heading):
     raise InvalidUsage(message)
 
 def validate_emission_input_data(emission):
-    print emission
-    data = {}
-    if emission.has_key('vehicleId'):
-        data['vehicle_id'] = get_valid_emission_vehicle_id(emission['vehicleId'])
-    else:
-        raise InvalidUsage('vehicleId is an obligatory field.')
+    
+    if emission:
+        data = {}
+        if emission.has_key('vehicleId'):
+            data['vehicle_id'] = get_valid_emission_vehicle_id(emission['vehicleId'])
+        else:
+            raise InvalidUsage('vehicleId is an obligatory field.')
+    
+        if emission.has_key('vehicleType'):
+            data['vehicle_type'] = get_valid_emission_vehicle_type(emission['vehicleType'])
+        else:
+            raise InvalidUsage('vehicleType is an obligatory field.')
+    
+        if emission.has_key('latitude'):
+            data['latitude'] = get_valid_emission_latitude(emission['latitude'])
+        else:
+            raise InvalidUsage('latitude is an obligatory field.')
+    
+        if emission.has_key('longitude'):
+            data['longitude'] = get_valid_emission_longitude(emission['longitude'])
+        else:
+            raise InvalidUsage('longitude is an obligatory field.')
+    
+        if emission.has_key('timestamp'):
+            data['timestamp'] = get_valid_emission_timestamp(emission['timestamp'])
+        else:
+            data['timestamp'] = get_valid_emission_timestamp(None)
+    
+        if emission.has_key('heading'):
+            data['heading'] = get_valid_emission_heading(emission['heading'])
+        else:
+            raise InvalidUsage('heading is an obligatory field.')
+        
+        return data
 
-    if emission.has_key('vehicleType'):
-        data['vehicle_type'] = get_valid_emission_vehicle_type(emission['vehicleType'])
     else:
-        raise InvalidUsage('vehicleType is an obligatory field.')
-
-    if emission.has_key('latitude'):
-        data['latitude'] = get_valid_emission_latitude(emission['latitude'])
-    else:
-        raise InvalidUsage('latitude is an obligatory field.')
-
-    if emission.has_key('longitude'):
-        data['longitude'] = get_valid_emission_longitude(emission['longitude'])
-    else:
-        raise InvalidUsage('longitude is an obligatory field.')
-
-    if emission.has_key('timestamp'):
-        data['timestamp'] = get_valid_emission_timestamp(emission['timestamp'])
-    else:
-        data['timestamp'] = get_valid_emission_timestamp(None)
-
-    if emission.has_key('heading'):
-        data['heading'] = get_valid_emission_heading(emission['heading'])
-    else:
-        raise InvalidUsage('heading is an obligatory field.')
-
-    return data
+        raise InvalidUsage('emission can not be a empty body.')
 
 def is_valid_position_emission(latitude, longitude):
     return TOWN_BOUNDAIRES_BOX['south'] <= latitude <= TOWN_BOUNDAIRES_BOX['north'] and TOWN_BOUNDAIRES_BOX['west'] <= longitude <= TOWN_BOUNDAIRES_BOX['east']
@@ -288,6 +293,7 @@ def app_root():
 
 @app.route(EMISSIONS_PATH, methods=['POST'])
 def collect_emissions():
+    print request.get_json()
     data = validate_emission_input_data(request.get_json())
     emission = Emission(data['vehicle_id'], data['vehicle_type'],
                         data['latitude'], data['longitude'],
@@ -344,4 +350,4 @@ def handle_invalid_input(error):
     return response
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(threaded=True, debug=True)
