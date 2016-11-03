@@ -209,7 +209,6 @@ def get_valid_emission_heading(heading):
     raise InvalidUsage(message)
 
 def validate_emission_input_data(emission):
-    
     if emission:
         data = {}
         if emission.has_key('vehicleId'):
@@ -254,7 +253,7 @@ def validate_query_parameters(request):
 
 ################
 # API Endpoints
-################   
+################
 @app.route(s.ROOT_PATH, methods=['GET'])
 def app_root():
     try:
