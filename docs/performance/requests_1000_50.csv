@@ -1,0 +1,13 @@
+"Method","Name","# requests","# failures","Median response time","Average response time","Min response time","Max response time","Average Content Size","Requests/s"
+"GET","/",403,7,4300,6932,200,68788,1313,1.44
+"GET","/api/v1/emissions/",424,7,17000,26605,786,176413,55913,1.51
+"POST","/api/v1/emissions/",8515,97,4100,7056,195,96703,191,30.33
+"GET","/api/v1/emissions/vehicles/431586f0-d19e-45f8-ab1f-784d22899ae7",82,1,14000,23882,819,107692,56063,0.29
+"GET","/api/v1/emissions/vehicles/b5492d62-61ab-410c-8a0d-d4576f8970ae",101,1,16000,24233,875,123035,55991,0.36
+"GET","/api/v1/emissions/vehicles/f69760aa-1f63-4d03-a588-552bb04a6813",99,1,19000,27314,1166,123890,55604,0.35
+"GET","/api/v1/emissions/vehicles/ffc8e318-d7e0-4d0b-ac2b-59d1fe42845c",88,1,14000,21405,800,195564,56005,0.31
+"GET","/api/v1/emissions/vehicles/type/bus",90,0,16000,22679,941,126426,55891,0.32
+"GET","/api/v1/emissions/vehicles/type/taxi",102,3,16000,24683,878,112362,56021,0.36
+"GET","/api/v1/emissions/vehicles/type/train",93,0,15000,24080,2010,91504,56409,0.33
+"GET","/api/v1/emissions/vehicles/type/tram",75,0,15000,25057,860,108412,55961,0.27
+"None","Total",10072,118,4300,9117,195,195564,6626,35.87
