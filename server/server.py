@@ -1,4 +1,4 @@
-import sys, os, sqlite3, uuid, random, time
+import sys, os, sqlite3, time
 from uuid import UUID
 from markdown import markdown
 from flask import g, request, Response, jsonify
@@ -8,28 +8,14 @@ sys.path.append(os.path.join(os.getcwd(),os.path.dirname(__file__), '../'))
 from client.emission import Emission
 from client.errorhandlers import InvalidUsage
 from complexresponse import ComplexResponse
+import settings as s
 
 app = FlaskAPI(__name__)
 app.url_map.strict_slashes = False
 
-CURRENT_STATIC_PATH = os.path.dirname(os.path.abspath(__file__))
-TOWN_CENTRE = {'latitude': 52.902700, 'longitude': -3.812850}
-TOWN_BOUNDAIRES_RADIUS = 50000.0 # 50 km in meters
-TOWN_BOUNDAIRES_SCALE = TOWN_BOUNDAIRES_RADIUS / 100000 # 0.5 max degree 
-TOWN_BOUNDAIRES_BOX = {'north': TOWN_CENTRE['latitude'] + TOWN_BOUNDAIRES_SCALE,
-                       'south': TOWN_CENTRE['latitude'] - TOWN_BOUNDAIRES_SCALE,
-                       'west': TOWN_CENTRE['longitude'] - TOWN_BOUNDAIRES_SCALE,
-                       'east': TOWN_CENTRE['longitude'] + TOWN_BOUNDAIRES_SCALE}
-MIN_HEADING = 0
-MAX_HEADING = 359
-DEFAULT_OFFSET = 0
-DEFAULT_LIMIT = 250
-
-""" Database connection and manipulation
-"""
-DATABASE_PATH = CURRENT_STATIC_PATH + '/../db/snowdonia.db'
-DATABASE_SCHEMA_PATH = CURRENT_STATIC_PATH + '/../db/schema.sql'
-
+########################
+# Database Manipulation
+########################
 def make_dicts(cursor, row):
     return dict((cursor.description[idx][0], value)
                 for idx, value in enumerate(row))
@@ -37,7 +23,7 @@ def make_dicts(cursor, row):
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect(DATABASE_PATH)
+        db = g._database = sqlite3.connect(s.DATABASE_PATH)
         db.row_factory = make_dicts
     return db
 
@@ -50,7 +36,7 @@ def close_connection(exception):
 def init_db():
     with app.app_context():
         db = get_db()
-        with app.open_resource(DATABASE_SCHEMA_PATH, mode='r') as f:
+        with app.open_resource(s.DATABASE_SCHEMA_PATH, mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
 
@@ -74,9 +60,6 @@ def query_db_insert(query, args=()):
         lastrowid = cursor.lastrowid
         cursor.close()
         return lastrowid
-
-# initialize database
-init_db()
 
 def add_emission(emission = Emission()):
     return query_db_insert("INSERT INTO emissions(vehicleId, vehicleType, latitude, longitude, timestamp, heading) VALUES(?,?,?,?,?,?)", 
@@ -154,25 +137,9 @@ def get_emissions(offset=None, limit=None):
 
     return (total['total'], query_db(sql_query, args))
 
-""" API endpoints manipulation
-"""
-
-ROOT_PATH = '/'
-API_VERSION = '1' # Please use simple ordinal there
-API_ROOT_PATH = ROOT_PATH + 'api/v' + API_VERSION + '/'
-EMISSIONS_PATH = API_ROOT_PATH + 'emissions/'
-VEHICLES_PATH = EMISSIONS_PATH + 'vehicles/'
-VEHICLES_TYPE_PATH = VEHICLES_PATH + 'type/'
-README_STATIC_PATH = CURRENT_STATIC_PATH + '/../README.md'
-
-def generate_mock_emission():
-    return {'vehicle_id': uuid.uuid4(), 
-            'vehicle_type': random.choice(['bus', 'taxi', 'tram', 'train']),
-            'latitude':round(random.uniform(-90, 90), 6),
-            'longitude':round(random.uniform(-180, 180), 6),
-            'timestamp': time.time(),
-            'heading': random.randint(0, 359)}
-
+#############################
+# Payload Validation methods
+#############################
 def get_valid_emission_vehicle_id(vehicle_id, version=4):
     if vehicle_id:
         try:
@@ -188,7 +155,7 @@ def get_valid_emission_vehicle_type(vehicle_type):
     if vehicle_type:
         try:
             vehicle_type = str(vehicle_type).lower()
-            if vehicle_type in ['bus', 'taxi', 'tram', 'train']:
+            if vehicle_type in s.VALID_VEHICLE_TYPES:
                 return vehicle_type
         except:
             pass
@@ -199,24 +166,24 @@ def get_valid_emission_latitude(latitude):
     if latitude:
         try:
             latitude = round(float(latitude), 6)
-            if TOWN_BOUNDAIRES_BOX['south'] <= latitude <= TOWN_BOUNDAIRES_BOX['north']:
+            if s.TOWN_BOUNDAIRES_BOX['south'] <= latitude <= s.TOWN_BOUNDAIRES_BOX['north']:
                 return latitude
         except:
             pass
 
-    message = 'This vehicle latitude is out of Snowdonia limits. Try something between [%s, %s]' % (TOWN_BOUNDAIRES_BOX['south'], TOWN_BOUNDAIRES_BOX['north'])
+    message = 'This vehicle latitude is out of Snowdonia limits. Try something between [%s, %s]' % (s.TOWN_BOUNDAIRES_BOX['south'], s.TOWN_BOUNDAIRES_BOX['north'])
     raise InvalidUsage(message)
 
 def get_valid_emission_longitude(longitude):
     if longitude:
         try:
             longitude = round(float(longitude), 6)
-            if TOWN_BOUNDAIRES_BOX['west'] <= longitude <= TOWN_BOUNDAIRES_BOX['east']:
+            if s.TOWN_BOUNDAIRES_BOX['west'] <= longitude <= s.TOWN_BOUNDAIRES_BOX['east']:
                 return longitude
         except:
             pass
 
-    message = 'This vehicle longitude is out of Snowdonia limits. Try something between [%s, %s]' % (TOWN_BOUNDAIRES_BOX['west'], TOWN_BOUNDAIRES_BOX['east'])
+    message = 'This vehicle longitude is out of Snowdonia limits. Try something between [%s, %s]' % (s.TOWN_BOUNDAIRES_BOX['west'], s.TOWN_BOUNDAIRES_BOX['east'])
     raise InvalidUsage(message)
 
 def get_valid_emission_timestamp(timestamp):
@@ -233,12 +200,12 @@ def get_valid_emission_heading(heading):
     if heading:
         try:
             heading = int(heading)
-            if MIN_HEADING <= heading <= MAX_HEADING:
+            if s.MIN_HEADING <= heading <= s.MAX_HEADING:
                 return heading
         except:
             pass
 
-    message = 'This vehicle heading is not valid. Try something between [%s, %s].' % (MIN_HEADING, MAX_HEADING)
+    message = 'This vehicle heading is not valid. Try something between [%s, %s].' % (s.MIN_HEADING, s.MAX_HEADING)
     raise InvalidUsage(message)
 
 def validate_emission_input_data(emission):
@@ -280,20 +247,24 @@ def validate_emission_input_data(emission):
     else:
         raise InvalidUsage('emission can not be a empty body.')
 
-def is_valid_position_emission(latitude, longitude):
-    return TOWN_BOUNDAIRES_BOX['south'] <= latitude <= TOWN_BOUNDAIRES_BOX['north'] and TOWN_BOUNDAIRES_BOX['west'] <= longitude <= TOWN_BOUNDAIRES_BOX['east']
-    
-@app.route(ROOT_PATH, methods=['GET'])
+def validate_query_parameters(request):
+    offset = int(request.args.get('offset')) if request and request.args and request.args.get('offset') and int(request.args.get('offset')) >= s.DEFAULT_OFFSET else s.DEFAULT_OFFSET
+    limit = int(request.args.get('limit')) if request and request.args and request.args.get('limit') and int(request.args.get('limit')) <= s.DEFAULT_LIMIT else s.DEFAULT_LIMIT
+    return [offset, limit]
+
+################
+# API Endpoints
+################   
+@app.route(s.ROOT_PATH, methods=['GET'])
 def app_root():
     try:
-        with open(README_STATIC_PATH, 'r') as f:
+        with open(s.README_STATIC_PATH, 'r') as f:
             return Response(markdown(f.read()), mimetype='text/html'), status.HTTP_200_OK
     except:
         return Response('Hello World!', mimetype='text/html'), status.HTTP_200_OK
 
-@app.route(EMISSIONS_PATH, methods=['POST'])
+@app.route(s.EMISSIONS_PATH, methods=['POST'])
 def collect_emissions():
-    print request.get_json()
     data = validate_emission_input_data(request.get_json())
     emission = Emission(data['vehicle_id'], data['vehicle_type'],
                         data['latitude'], data['longitude'],
@@ -302,46 +273,38 @@ def collect_emissions():
     add_emission(emission)
     response = jsonify(emission.generate_output())
     response.status_code = status.HTTP_201_CREATED
-    response.headers['location'] = VEHICLES_PATH + str(data['vehicle_id']) +'/'
+    response.headers['location'] = s.VEHICLES_PATH + str(data['vehicle_id']) +'/'
     return response
 
-@app.route(VEHICLES_PATH + '<uuid:vehicle_id>', methods=['GET'])
+@app.route(s.VEHICLES_PATH + '<uuid:vehicle_id>', methods=['GET'])
 def show_emissions_by_vehicle_id(vehicle_id):
-    offset = int(request.args.get('offset')) if request.args.get('offset') and int(request.args.get('offset')) >= DEFAULT_OFFSET else DEFAULT_OFFSET
-    limit = int(request.args.get('limit')) if request.args.get('limit') and int(request.args.get('limit')) <= DEFAULT_LIMIT else DEFAULT_LIMIT
+    offset, limit = validate_query_parameters(request)
     total, result = get_emissions_by_vehicle_id(vehicle_id, offset, limit)
     cr = ComplexResponse(total, offset, limit, result)
     response = jsonify(cr.generate_output())
     response.status_code = status.HTTP_200_OK
     return response
 
-@app.route(VEHICLES_TYPE_PATH + '<string:vehicle_type>', methods=['GET'])
+@app.route(s.VEHICLES_TYPE_PATH + '<string:vehicle_type>', methods=['GET'])
 def show_emissions_by_vehicle_type(vehicle_type):
-    offset = int(request.args.get('offset')) if request.args.get('offset') and int(request.args.get('offset')) >= DEFAULT_OFFSET else DEFAULT_OFFSET
-    limit = int(request.args.get('limit')) if request.args.get('limit') and int(request.args.get('limit')) <= DEFAULT_LIMIT else DEFAULT_LIMIT
+    offset, limit = validate_query_parameters(request)
     total, result = get_emissions_by_vehicle_type(vehicle_type, offset, limit)
     cr = ComplexResponse(total, offset, limit, result)
     response = jsonify(cr.generate_output())
     response.status_code = status.HTTP_200_OK
     return response
 
-@app.route(EMISSIONS_PATH, methods=['GET'])
+@app.route(s.EMISSIONS_PATH, methods=['GET'])
 def show_emissions():
-    offset = int(request.args.get('offset')) if request.args.get('offset') and int(request.args.get('offset')) >= DEFAULT_OFFSET else DEFAULT_OFFSET
-    limit = int(request.args.get('limit')) if request.args.get('limit') and int(request.args.get('limit')) <= DEFAULT_LIMIT else DEFAULT_LIMIT
+    offset, limit = validate_query_parameters(request)
     total, result = get_emissions(offset, limit)
     cr = ComplexResponse(total, offset, limit, result)
     response = jsonify(cr.generate_output())
     response.status_code = status.HTTP_200_OK
     return response
 
-""" Error handlers
+""" Error handler
 """
-# @app.errorhandler(404)
-# def page_not_found(e):
-#    """ By default will redirect any 404 error page to app root.
-#    """
-#    return redirect(url_for('app_root'))
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_input(error):
@@ -350,6 +313,8 @@ def handle_invalid_input(error):
     return response
 
 if __name__ == '__main__':
+    # initialize database
+    init_db()
     host = '0.0.0.0'
     port = int(os.environ.get('PORT', 5000))
     app.run(threaded=True, debug=True, host=host, port=port)
