@@ -1,0 +1,6 @@
+<additional>
+    <vType accel="2.6" decel="4.5" id="taxi" length="5.0" maxSpeed="60.0" sigma="0.0" color="1,1,0"/>
+    <vType accel="2.6" decel="4.5" id="bus" length="15.0" maxSpeed="40.0" sigma="0.0" color="1,1,1"/>
+    <vType accel="2.6" decel="4.5" id="tram" length="50.0" maxSpeed="80.0" sigma="0.0" color="0,1,1"/>
+    <vType accel="2.6" decel="4.5" id="train" length="150.0" maxSpeed="150.0" sigma="0.0" color="0,0,1"/>
+</additional>

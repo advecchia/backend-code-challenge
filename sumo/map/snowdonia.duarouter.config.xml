@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/duarouterConfiguration.xsd">
+
+    <input>
+        <net-file value="snowdonia.grid.net.xml"/>
+        <additional-files value="snowdonia.taz.xml,snowdonia.vehicles.add.xml"/>
+        <trip-files value="snowdonia.trips.xml"/>
+    </input>
+
+    <output>
+        <output-file value="snowdonia.rou.xml"/>
+    </output>
+
+    <processing>
+        <with-taz value="true"/>
+    </processing>
+
+</configuration>

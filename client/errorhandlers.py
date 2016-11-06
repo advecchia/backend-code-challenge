@@ -1,4 +1,6 @@
 class InvalidUsage(Exception):
+    """Class used to manipulate exceptions in input validation for emissions API.
+    """
     status_code = 400
 
     def __init__(self, message, status_code=None, payload=None):

@@ -1,0 +1,24 @@
+$VMR
+* vehicle type - taxi
+taxi
+* From-Time  To-Time
+0.00 2.00
+* Factor
+130.00
+*
+* District number
+5
+* names:
+         city_center          taxi_NW          taxi_NE          taxi_SE          taxi_SW
+*
+* District 1 Sum = 16
+         0          4          4          4          4
+* District 2 Sum = 17
+         2          0          5          5          5
+* District 3 Sum = 17
+         2          5          0          5          5
+* District 4 Sum = 17
+         2          5          5          0          5
+* District 5 Sum = 17
+         2          5          5          5          0
+

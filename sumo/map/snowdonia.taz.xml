@@ -1,0 +1,13 @@
+<tazs>
+    <taz id="city_center" edges="10/11to10/10 10/10to10/11 11/10to10/10 10/10to11/10 10/9to10/10 10/10to10/9 10/10to9/10 9/10to10/10"/>
+    <taz id="taxi_NW" edges="1/20to0/20 0/20to1/20 0/20to0/19 0/19to0/20 1/20to1/19 1/19to1/20 1/19to0/19 0/19to1/19"/>
+    <taz id="taxi_NE" edges="20/20to19/20 19/20to20/20 19/20to19/19 19/19to19/20 20/20to20/19 20/19to20/20 20/19to19/19 19/19to20/19"/>
+    <taz id="taxi_SE" edges="19/0to20/0 20/0to19/0 19/1to19/0 19/0to19/1 19/0to19/1 20/0to20/1 20/1to19/1 19/1to20/1"/>
+    <taz id="taxi_SW" edges="1/1to0/1 0/1to1/1 0/1to0/0 0/0to0/1 1/1to1/0 1/0to1/1 1/0to0/0 0/0to1/0"/>
+    <taz id="train_W" edges="1/10to0/10 0/10to1/10"/>
+    <taz id="train_E" edges="20/10to19/10 19/10to20/10"/>
+    <taz id="tram_NNW" edges="6/20to5/20 5/20to6/20 5/20to5/19 5/19to5/20 6/20to6/19 6/19to6/20 6/19to5/19 5/19to6/19"/>
+    <taz id="tram_SSE" edges="15/1to14/1 14/1to15/1 15/1to15/0 15/0to15/1 14/0to14/1 14/1to14/0 15/0to14/0 14/0to15/0"/>
+    <taz id="bus_NNE" edges="15/19to14/19 14/19to15/19 15/20to15/19 15/19to15/20 14/20to14/19 14/19to14/20 15/20to14/20 14/20to15/20"/>
+    <taz id="bus_SSW" edges="5/0to6/0 6/0to5/0 6/1to6/0 6/0to6/1 5/1to5/0 5/0to5/1 5/1to6/1 6/1to5/1"/>
+</tazs>

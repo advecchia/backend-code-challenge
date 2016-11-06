@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/od2tripsConfiguration.xsd">
+
+    <input>
+        <taz-files value="snowdonia.taz.xml"/>
+        <od-matrix-files value="taxi.od.matrix,bus.od.matrix,tram.od.matrix,train.od.matrix"/>
+    </input>
+
+    <output>
+        <output-file value="snowdonia.trips.xml"/>
+        <flow-output value="snowdonia.flow.xml"/>
+    </output>
+
+</configuration>

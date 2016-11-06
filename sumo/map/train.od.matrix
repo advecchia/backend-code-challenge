@@ -1,0 +1,19 @@
+$VMR
+* vehicle type - train - rail_urban
+train
+* From-Time  To-Time
+0.00 2.00
+* Factor
+65.00
+*
+* District number
+3
+* names:
+         city_center          train_W          train_E
+*
+* District 1 Sum = 2
+         0          1          1
+* District 2 Sum = 1
+         0          0          1
+* District 3 Sum = 2
+         1          1          0

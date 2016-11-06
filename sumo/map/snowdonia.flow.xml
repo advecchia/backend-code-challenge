@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Sat Nov  5 17:31:46 2016 by SUMO od2trips Version 0.25.0
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/od2tripsConfiguration.xsd">
+
+    <input>
+        <taz-files value="snowdonia.taz.xml"/>
+        <od-matrix-files value="taxi.od.matrix,bus.od.matrix,tram.od.matrix,train.od.matrix"/>
+    </input>
+
+    <output>
+        <output-file value="snowdonia.trips.xml"/>
+        <flow-output value="snowdonia.flow.xml"/>
+    </output>
+
+</configuration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <flow id="0" begin="0.00" end="7200.00" number="260" type="bus" fromTaz="bus_NNE" toTaz="bus_SSW" departLane="free" departSpeed="max"/>
+    <flow id="1" begin="0.00" end="7200.00" number="130" type="bus" fromTaz="bus_NNE" toTaz="city_center" departLane="free" departSpeed="max"/>
+    <flow id="2" begin="0.00" end="7200.00" number="390" type="bus" fromTaz="bus_SSW" toTaz="bus_NNE" departLane="free" departSpeed="max"/>
+    <flow id="3" begin="0.00" end="7200.00" number="130" type="bus" fromTaz="bus_SSW" toTaz="city_center" departLane="free" departSpeed="max"/>
+    <flow id="4" begin="0.00" end="7200.00" number="260" type="bus" fromTaz="city_center" toTaz="bus_NNE" departLane="free" departSpeed="max"/>
+    <flow id="5" begin="0.00" end="7200.00" number="130" type="bus" fromTaz="city_center" toTaz="bus_SSW" departLane="free" departSpeed="max"/>
+    <flow id="6" begin="0.00" end="7200.00" number="520" type="taxi" fromTaz="city_center" toTaz="taxi_NE" departLane="free" departSpeed="max"/>
+    <flow id="7" begin="0.00" end="7200.00" number="520" type="taxi" fromTaz="city_center" toTaz="taxi_NW" departLane="free" departSpeed="max"/>
+    <flow id="8" begin="0.00" end="7200.00" number="520" type="taxi" fromTaz="city_center" toTaz="taxi_SE" departLane="free" departSpeed="max"/>
+    <flow id="9" begin="0.00" end="7200.00" number="520" type="taxi" fromTaz="city_center" toTaz="taxi_SW" departLane="free" departSpeed="max"/>
+    <flow id="10" begin="0.00" end="7200.00" number="65" type="train" fromTaz="city_center" toTaz="train_E" departLane="free" departSpeed="max"/>
+    <flow id="11" begin="0.00" end="7200.00" number="65" type="train" fromTaz="city_center" toTaz="train_W" departLane="free" departSpeed="max"/>
+    <flow id="12" begin="0.00" end="7200.00" number="65" type="tram" fromTaz="city_center" toTaz="tram_NNW" departLane="free" departSpeed="max"/>
+    <flow id="13" begin="0.00" end="7200.00" number="130" type="tram" fromTaz="city_center" toTaz="tram_SSE" departLane="free" departSpeed="max"/>
+    <flow id="14" begin="0.00" end="7200.00" number="260" type="taxi" fromTaz="taxi_NE" toTaz="city_center" departLane="free" departSpeed="max"/>
+    <flow id="15" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_NE" toTaz="taxi_NW" departLane="free" departSpeed="max"/>
+    <flow id="16" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_NE" toTaz="taxi_SE" departLane="free" departSpeed="max"/>
+    <flow id="17" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_NE" toTaz="taxi_SW" departLane="free" departSpeed="max"/>
+    <flow id="18" begin="0.00" end="7200.00" number="260" type="taxi" fromTaz="taxi_NW" toTaz="city_center" departLane="free" departSpeed="max"/>
+    <flow id="19" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_NW" toTaz="taxi_NE" departLane="free" departSpeed="max"/>
+    <flow id="20" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_NW" toTaz="taxi_SE" departLane="free" departSpeed="max"/>
+    <flow id="21" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_NW" toTaz="taxi_SW" departLane="free" departSpeed="max"/>
+    <flow id="22" begin="0.00" end="7200.00" number="260" type="taxi" fromTaz="taxi_SE" toTaz="city_center" departLane="free" departSpeed="max"/>
+    <flow id="23" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_SE" toTaz="taxi_NE" departLane="free" departSpeed="max"/>
+    <flow id="24" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_SE" toTaz="taxi_NW" departLane="free" departSpeed="max"/>
+    <flow id="25" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_SE" toTaz="taxi_SW" departLane="free" departSpeed="max"/>
+    <flow id="26" begin="0.00" end="7200.00" number="260" type="taxi" fromTaz="taxi_SW" toTaz="city_center" departLane="free" departSpeed="max"/>
+    <flow id="27" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_SW" toTaz="taxi_NE" departLane="free" departSpeed="max"/>
+    <flow id="28" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_SW" toTaz="taxi_NW" departLane="free" departSpeed="max"/>
+    <flow id="29" begin="0.00" end="7200.00" number="650" type="taxi" fromTaz="taxi_SW" toTaz="taxi_SE" departLane="free" departSpeed="max"/>
+    <flow id="30" begin="0.00" end="7200.00" number="65" type="train" fromTaz="train_E" toTaz="city_center" departLane="free" departSpeed="max"/>
+    <flow id="31" begin="0.00" end="7200.00" number="65" type="train" fromTaz="train_E" toTaz="train_W" departLane="free" departSpeed="max"/>
+    <flow id="32" begin="0.00" end="7200.00" number="65" type="train" fromTaz="train_W" toTaz="train_E" departLane="free" departSpeed="max"/>
+    <flow id="33" begin="0.00" end="7200.00" number="130" type="tram" fromTaz="tram_NNW" toTaz="city_center" departLane="free" departSpeed="max"/>
+    <flow id="34" begin="0.00" end="7200.00" number="65" type="tram" fromTaz="tram_NNW" toTaz="tram_SSE" departLane="free" departSpeed="max"/>
+    <flow id="35" begin="0.00" end="7200.00" number="130" type="tram" fromTaz="tram_SSE" toTaz="city_center" departLane="free" departSpeed="max"/>
+    <flow id="36" begin="0.00" end="7200.00" number="130" type="tram" fromTaz="tram_SSE" toTaz="tram_NNW" departLane="free" departSpeed="max"/>
+</routes>

@@ -2,6 +2,8 @@
 For information about the challenge, see [CHALLENGE](https://github.com/advecchia/backend-code-challenge/blob/master/CHALLENGE.md) documentation.  
 Below you can see information about how to setup your development environment and also how to deploy this code to [Heroku](https://www.heroku.com/). For traffic simulation I used [SUMO](http://sumo.dlr.de/userdoc/index.html) and [JOSM](https://josm.openstreetmap.de/), there is also a how to make your own simulation. For performance I chose [LOCUST](http://locust.io/).  
 
+## Available API
+
 ## Development environment and Heroku deploy  
 All development has been done on Ubuntu 14.04 LTS, so I will assume that if you use another version or other OS some changes will be need at your account and risk.  
 
@@ -60,7 +62,7 @@ First of all is necessary to define a map for simulation, this can be done using
 After this step you will need to remove nodes and edges (delete) that are off of the bounding box of the generated map, this is necessary because they can break the SUMO simulation. Another thing to do is simplify ways (Shift + y) this will remove some nodes from the map and improve performance simulation.  
 
 ### Generating Network  
-As a simulation option I choose to construct a scaled map from Snowdonia (toy grid map) at about 5% scale, this will allow a much better simulation experience. Inside the emitter code I make the expected corrections to Town lat/long coordinates and heading to deal with challenge specifications.  
+As a simulation option I choose to construct a scaled map from Snowdonia (toy grid map) at about 5% scale, this will allow a much better simulation experience. Inside the emitter code I make the expected corrections to Town latitude and longitude coordinates to deal with challenge specifications.  
 
 Executing the below command will generate the experiment network (see figure).  
 $ netgenerate -g --grid.number 21 --grid.length 250 --o snowdonia.grid.net.xml --tls.guess --tls.join --default.lanenumber 2 --no-turnarounds --no-turnarounds.tls --no-left-connections  
@@ -100,7 +102,7 @@ See an example of a vehicle route, the route edges list define each edge that th
 
 **Creating Simulation configuration file**  
 This step create the configuration file that will be used when running the sumo simulation, it uses the grid network of Snowdonia and the routing file.  
-$ sumo --save-configuration snowdonia.sumo.cfg -n snowdonia.grid.net.xml -r snowdonia.rou.xml  
+$ sumo --save-configuration snowdonia.sumo.cfg -n snowdonia.grid.net.xml -r snowdonia.rou.xml --remote-port 8813  
 
 ### Run SUMO - Simulation For Urban Mobility  
 You can run the simulation in two way, first in the console, the simulation run in a few seconds. Another way is running the sumo-gui interface, there you can visualize the vehicle trips inside the network and also can change some behavior of this view, like delay of step simulation and color of occupancy edges.  
@@ -113,3 +115,8 @@ $ sumo-gui -c snowdonia.sumo.cfg
 
 ### Runnig the vehicle emitter using SUMO Traci Interface and Python
 To accomplish the task and make the vehicle GPS emitting in the Snowdonia network I need to use [Traci Interface](http://www.sumo.dlr.de/wiki/TraCI/Interfacing_TraCI_from_Python).
+
+$ python run.py
+
+## Further reading
+To test distance based in degree variation I used this [Calculator](http://www.nhc.noaa.gov/gccalc.shtml).
