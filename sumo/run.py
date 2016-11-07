@@ -16,6 +16,12 @@ from client.emission import Emission
 PORT = "--port"
 MIN_PORT = "-p"
 DEFAULT_PORT = 8813
+REMOTE = '--remote'
+MIN_REMOTE = "-r"
+DEFAULT_REMOTE = False
+SUMO_GUI = '--sumo-gui'
+MIN_SUMO_GUI = "-g"
+DEFAULT_SUMO_GUI = False
 MAP_SCALE = 0.05
 DEVICE_TIME_TO_EMIT = 20.0
 
@@ -28,10 +34,6 @@ tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
 sys.path.append(tools)
 import traci
 
-# Initialize a instance of sumo with the configuration, this allow to traci to communicate
-# and access vehicles information
-sumo_process = subprocess.Popen(['sumo', '-c', 'map/snowdonia.sumo.cfg', '--remote-port', '8813'])
-
 def parse():
     """Read the input and put the words in a dictionary.
     """
@@ -41,6 +43,8 @@ def parse():
     # Simulation configuration group
     groupSim = parser.add_argument_group("Simulation group","The parameters that define the basics of simulation execution.")
     groupSim.add_argument(MIN_PORT, PORT, dest=PORT, nargs=1, metavar="number", default=DEFAULT_PORT, help="Flag to inform the port to communicate with traci-hub or SUMO.")
+    groupSim.add_argument(MIN_REMOTE, REMOTE, dest=REMOTE, action='store_true', default=DEFAULT_REMOTE, help="Flag that indicates the use of the remote API.")
+    groupSim.add_argument(MIN_SUMO_GUI, SUMO_GUI, dest=SUMO_GUI, action='store_true', default=DEFAULT_SUMO_GUI, help="Flag that indicates the use of the SUMO visual interface.")
 
     args = parser.parse_args()
     params = vars(args)
@@ -86,11 +90,28 @@ def main():
     params = parse()
 
     # For the use of SUMO with traci-hub.
-    port = int(params[PORT].pop()) 
-    if port >= 0:
-        traci.init(port)
+    port = int(params[PORT].pop())
+    if port <= 0:
+        port = DEFAULT_PORT
+
+    sumo_gui = bool(params[SUMO_GUI].pop())
+    if sumo_gui:
+        sumo_gui = 'sumo-gui'
     else:
-        traci.init(DEFAULT_PORT)
+        sumo_gui = 'sumo'
+
+    remote_flag = bool(params[REMOTE].pop())
+    if remote_flag:
+        emitter_url = 'http://guarded-plateau-54331.herokuapp.com'
+        emitter_port = None
+    else:
+        emitter_url = 'http://0.0.0.0'
+        emitter_port = 5000
+
+    # Initialize a instance of sumo with the configuration, this allow to traci to communicate
+    # and access vehicles information
+    sumo_process = subprocess.Popen([sumo_gui, '-c', 'map/snowdonia.sumo.cfg', '--remote-port', str(port)])
+    traci.init(port)
 
     # For stop execution
     total_departed = 0
@@ -104,7 +125,7 @@ def main():
 
     vehicles_emitters = defaultdict(dict) # {vehicle_id: [time, vehicle]}
     to_emit_id_list = []
-    emitter = Emitter()
+    emitter = Emitter(emitter_url, emitter_port)
 
     while True:
 

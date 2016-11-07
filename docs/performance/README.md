@@ -1,4 +1,18 @@
-# Performance simulations
+# Performance Tests
+[Go back to index](https://github.com/advecchia/backend-code-challenge/blob/master/README.md) documentation.  
+
+A set of performance tests are performed with [LOCUST](http://locust.io/).
+
+To run locally use (after setup your environment):  
+$ locust -f backend-code-challenge/tests/performance.py --host=http://0.0.0.0:5000  
+
+To run over my deployed instance use the below command:  
+$ locust -f backend-code-challenge/tests/performance.py --host=http://guarded-plateau-54331.herokuapp.com  
+
+You can now access a web interface to execute the performance test, there you can add manually two parameters, the max number of concurrent users and the user spawn per second. Access http://127.0.0.1:8089/ in the browser of your preference and enjoy!  
+
+---  
+
 To show API resilience, I make a variation of simulation parameters. The challenge describe that each vehicle can emit a GPS signal at every 20 seconds, so in this performance test I use the same approach for spawned users accessing the API endpoints. Also I defined a distribution over endpoint access:
 
 | API Endpoint  | HTTP Method           | Demand  | Description
@@ -9,12 +23,12 @@ To show API resilience, I make a variation of simulation parameters. The challen
 | /api/v1/emissions/vehicles/<uuid:id>      | GET      |   5% | API that allow to get a list of emissions by some vehicle.
 | /api/v1/emissions/vehicles/type/<string:type>      | GET      |   5% | API that allow to get a list of emissions by some vehicle type.
 
-Below you can see the results for experiments for at least 10 accumulated sequential runs. The title indicates the input parameters for performance framework, in each experiment the first table represents the final request statistics, the second table show the crescent request distribution over time response. The time columns are measured in milliseconds.
+Below you can see the results for experiments for at least 10 accumulated sequential runs. The title indicates the input parameters for performance framework, in each experiment the first table represents the final request statistics, the second table show the growing value of request distribution over time response. The time columns are measured in milliseconds.
 
 If you take care of failures, you can see that in the majority of the cases the failure rate is below 1% but they occurs, and in general are occasioned by request connection limits, like the below line error:
 
-> ConnectionError(MaxRetryError("HTTPConnectionPool(host='guarded-plateau-54331.herokuapp.com', port=80): Max retries exceeded with url: / (Caused by NewConnectionError('<requests.packages.urllib3.connection.HTTPConnection object at 0x7f37f4416090>: Failed to establish a new connection: [Errno -2] Name or service not known',))",),)
-  
+> ConnectionError(MaxRetryError("HTTPConnectionPool(host='guarded-plateau-54331.herokuapp.com', port=80): Max retries exceeded with url: / (Caused by NewConnectionError('<requests.packages.urllib3.connection.HTTPConnection object at 0x7f37f4416090>: Failed to establish a new connection: [Errno -2] Name or service not known',))",),)  
+
 ## Max users concurrently = 100, Spawned users per second = 50
 Method|Name|# requests|# failures|Median response time|Average response time|Min response time|Max response time|Average Content Size|Requests/s
 | ------------- |------------- | :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:|

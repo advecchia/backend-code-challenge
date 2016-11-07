@@ -5,9 +5,9 @@ import time
 from flask import request
 
 class EmissionValidator(object):
-    """ This class encapsulate methods used to valid payload input for an emission.
-    If everything is correct it generates a dictionary containing all correct 
-    emission data.  
+    """ This class encapsulate methods used to validate payload input from an 
+    emission. If everything is correct it generates a dictionary containing all 
+    correct emission data.  
     """
     def __init__(self):
         pass
@@ -138,6 +138,9 @@ class EmissionValidator(object):
             raise InvalidUsage('emission can not be a empty body.')
 
 class QueryParameterValidator(object):
+    """ This class encapsulate methods used to validate query parameter from 
+    an API call. Currently only offset and limit are validated.
+    """
     def __init__(self):
         pass
 
