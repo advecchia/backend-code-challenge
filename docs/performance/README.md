@@ -1,5 +1,12 @@
 # Performance Tests
-[Go back to index](https://github.com/advecchia/backend-code-challenge/blob/master/README.md) documentation.  
+
+### <a id="toc"></a>Table of Contents 
+ * [Go back to home](https://github.com/advecchia/backend-code-challenge/blob/master/README.md)  
+ * [Test 1](#test-1)  
+ * [Test 2](#test-2)
+ * [Test 3](#test-3)  
+ * [Test 4](#test-4)  
+ * [Test 5](#test-5)    
 
 A set of performance tests are performed with [LOCUST](http://locust.io/).
 
@@ -29,7 +36,8 @@ If you take care of failures, you can see that in the majority of the cases the 
 
 > ConnectionError(MaxRetryError("HTTPConnectionPool(host='guarded-plateau-54331.herokuapp.com', port=80): Max retries exceeded with url: / (Caused by NewConnectionError('<requests.packages.urllib3.connection.HTTPConnection object at 0x7f37f4416090>: Failed to establish a new connection: [Errno -2] Name or service not known',))",),)  
 
-## Max users concurrently = 100, Spawned users per second = 50
+## Test 1 <a id="test-1"></a> [^](#toc "To top")  
+**Max users concurrently = 100, Spawned users per second = 50**  
 Method|Name|# requests|# failures|Median response time|Average response time|Min response time|Max response time|Average Content Size|Requests/s
 | ------------- |------------- | :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:|
 GET|/|33|0|320|512|192|1396|1313|0.25
@@ -60,7 +68,8 @@ GET /api/v1/emissions/vehicles/type/train|10|730|820|890|940|1200|1200|1200|1200
 GET /api/v1/emissions/vehicles/type/tram|7|920|1000|1100|1100|1700|1700|1700|1700|1684
 None Total|1038|1100|1700|1800|1800|2300|2500|2600|2900|4009
 
-## Max users concurrently = 250, Spawned users per second = 50
+## Test 2 <a id="test-2"></a> [^](#toc "To top")  
+**Max users concurrently = 250, Spawned users per second = 50**  
 Method|Name|# requests|# failures|Median response time|Average response time|Min response time|Max response time|Average Content Size|Requests/s
 | ------------- |------------- | :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:|
 GET|/|98|0|220|740|192|5577|1313|0.65
@@ -91,7 +100,8 @@ GET /api/v1/emissions/vehicles/type/train|14|690|1100|1200|3300|4000|4800|4800|4
 GET /api/v1/emissions/vehicles/type/tram|22|680|870|970|1100|3400|3500|5000|5000|5041
 None Total|2500|620|3100|3700|4000|4700|5400|5800|5900|7893
 
-## Max users concurrently = 500, Spawned users per second = 50
+## Test 3 <a id="test-3"></a> [^](#toc "To top")  
+**Max users concurrently = 500, Spawned users per second = 50**  
 Method|Name|# requests|# failures|Median response time|Average response time|Min response time|Max response time|Average Content Size|Requests/s
 | ------------- |------------- | :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:|
 GET|/|180|0|290|1458|192|8431|1313|1.09
@@ -122,7 +132,8 @@ GET /api/v1/emissions/vehicles/type/train|41|940|1300|1500|1700|6000|8000|9600|9
 GET /api/v1/emissions/vehicles/type/tram|45|890|1100|1400|1800|7100|8700|9600|9600|9571
 None Total|5075|1000|5800|6600|7200|8100|8600|9000|9100|14210
 
-## Max users concurrently = 750, Spawned users per second = 50
+## Test 4 <a id="test-4"></a> [^](#toc "To top")  
+**Max users concurrently = 750, Spawned users per second = 50**  
 Method|Name|# requests|# failures|Median response time|Average response time|Min response time|Max response time|Average Content Size|Requests/s
 | ------------- |------------- | :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:|
 GET|/|239|0|3000|5123|205|17570|1313|1.13
@@ -153,7 +164,8 @@ GET /api/v1/emissions/vehicles/type/train|55|3700|5200|6800|14000|16000|17000|17
 GET /api/v1/emissions/vehicles/type/tram|53|3500|4100|4800|5200|6400|17000|17000|18000|18030
 None Total|7621|4800|14000|16000|16000|16000|17000|17000|18000|21107
 
-## Max users concurrently = 1000, Spawned users per second = 50
+## Test 5 <a id="test-5"></a> [^](#toc "To top")  
+**Max users concurrently = 100, Spawned users per second = 50**  
 Method|Name|# requests|# failures|Median response time|Average response time|Min response time|Max response time|Average Content Size|Requests/s
 | ------------- |------------- | :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:|
 GET|/|403|7|4300|6932|200|68788|1313|1.44

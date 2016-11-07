@@ -95,8 +95,8 @@ To accomplish the task and make the vehicle GPS emission in the Snowdonia city I
 
 The default behavior is to run the emitter with the local server and without user interface. If you want to execute using the heroku API and with graphical interface use the second command line.
 
-Run the below command at console (root/sumo folder)
+Run the below command at console (root/sumo folder)  
 $ python run.py
 
-Run the below command at console (root/sumo folder) to use heroku and sumo gui.
+Run the below command at console (root/sumo folder) to use heroku and sumo gui.  
 $ python run.py --remote --sumo-gui
